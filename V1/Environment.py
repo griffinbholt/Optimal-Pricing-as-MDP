@@ -5,10 +5,10 @@ import numpy as np
 Edited from Environment.py to allow for time varying model
 '''
 class TVEnvironment:
-    def __init__(self, n_people):
+    def __init__(self, n_people, amplitude):
         self.n_people = n_people
         # parameters for tau update
-        self.A = 5 # alter for application (may pass as parameter when setting up instead
+        self.A = amplitude # alter for application (may pass as parameter when setting up instead
         self.B = np.pi * 2 / 365 
         self.C = 0 # can pass as a parameter to adjust in experiments instead
 
@@ -41,18 +41,23 @@ class TVEnvironment:
 
     def update_tau(self, t):
         # noise added to update for stochasticity
-        eps = np.random.normal(0, 1) # constant gets broadcasted to dimensions of tau
+        eps = [np.random.normal(0, 1) for i in range(n_people)] 
         self.tau = self.tau + self.A * np.sin(self.B * (self.C + t)) + eps
         self._enforce_nonnegative()
 
     def _enforce_nonnegative(self):
         self.tau = np.where(self.tau >= 0, self.tau, 0)
 
-    def get_profit(self, price, time):
+    def get_profit(self, price):
         return price * self.get_n_people_bought(price)
 
-    def get_n_people_bought(self, price, time):
+    def get_n_people_bought(self, price):
         return (self.get_observation(price)).sum()
 
-    def get_observation(self, price, time):
-        return update_tau(price ,time) >= price
+    def get_observation(self, price):
+        return self.tau >= price
+
+    # no adjustments from V0
+    def get_optimal_price(self):
+        profits = np.array([self.get_profit(self.tau[i]) for i in range(self.n_people)])
+        return self.tau[np.argmax(profits)]
