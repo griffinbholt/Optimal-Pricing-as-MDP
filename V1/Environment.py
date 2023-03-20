@@ -41,7 +41,7 @@ class TVEnvironment:
 
     def update_tau(self, t):
         # noise added to update for stochasticity
-        eps = [np.random.normal(0, 1) for i in range(n_people)] 
+        eps = [np.random.normal(0, 1) for i in range(self.n_people)] 
         self.tau = self.tau + self.A * np.sin(self.B * (self.C + t)) + eps
         self._enforce_nonnegative()
 
