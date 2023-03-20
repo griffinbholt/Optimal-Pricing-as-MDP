@@ -5,10 +5,10 @@ import numpy as np
 Edited from Environment.py to allow for time varying model
 '''
 class TVEnvironment:
-    def __init__(self, n_people, amplitude):
+    def __init__(self, n_people):
         self.n_people = n_people
         # parameters for tau update
-        self.A = amplitude # alter for application (may pass as parameter when setting up instead
+        self.A = 5 # alter for application (may pass as parameter when setting up instead
         self.B = np.pi * 2 / 365 
         self.C = 0 # can pass as a parameter to adjust in experiments instead
 

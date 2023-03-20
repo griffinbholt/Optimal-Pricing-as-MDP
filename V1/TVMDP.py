@@ -1,10 +1,10 @@
 import numpy as np
-import tensorflow as tf
-from tensorflow import keras
+#import tensorflow as tf
+#from tensorflow import keras
 
 class QLearningMDP:
     def __init__(self, n_actions: int, gamma: float, alpha: float):
-        self.n_states = n_states
+        self.n_actions = n_actions
         self.gamma = gamma # discount
         self.alpha = alpha # learning rate
         # initialize beta and theta to initialize the Q function
